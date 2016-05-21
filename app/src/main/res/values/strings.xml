@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">LibroAbierto</string>
+
+    <!-- SignIn -->
+    <string name="signed_in_fmt" formatted="false">Signed in as: %s, %s, %s, %s</string>
 </resources>
