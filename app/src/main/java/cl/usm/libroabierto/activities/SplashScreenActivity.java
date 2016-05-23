@@ -1,9 +1,11 @@
-package cl.usm.libroabierto;
+package cl.usm.libroabierto.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SplashScreen extends AppCompatActivity {
+import cl.usm.libroabierto.R;
+
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

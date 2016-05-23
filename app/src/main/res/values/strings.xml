@@ -2,5 +2,24 @@
     <string name="app_name">LibroAbierto</string>
 
     <!-- SignIn -->
-    <string name="signed_in_fmt" formatted="false">Signed in as: %s, %s, %s, %s</string>
+    <string name="signed_in_fmt" formatted="false">Signed in as: %s, %s, %s, %s</string>11
+
+    <!-- Nav Menu -->
+    <string name="opcion_publicaciones_title">Publicaciones</string>
+    <string name="opcion_publicar_libro_title">Publicar Libro</string>
+    <string name="opcion_ofertas_title">Ver Ofertas</string>
+    <string name="opcion_profile_title">Mi Cuenta</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Sección Publicaciones -->
+    <string name="publicacion_emisor">Publicado por:</string>
+    <string name="fecha_publicacion">Fecha de Publicación:</string>
+
+    <!-- Sección Detalle Libro -->
+    <string name="publicado_label">Publicado por</string>
+    <string name="fecha_public_label">Fecha de Publicación</string>
+    <string name="estado_label">Estado</string>
+    <string name="description_label">Descripción</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/opcion_publicaciones"
+        android:icon="@drawable/ic_content_paste"
+        android:title="Publicaciones" />
+    <item
+        android:id="@+id/opcion_publicar_libro"
+        android:icon="@drawable/ic_publicar"
+        android:title="Publicar Libro" />
+    <item
+        android:id="@+id/opcion_ofertas"
+        android:icon="@drawable/ic_forum"
+        android:title="Ver Ofertas" />
+    <item
+        android:id="@+id/opcion_profile"
+        android:icon="@drawable/ic_action_name"
+        android:title="Mi Cuenta" />
+</menu>

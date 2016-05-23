@@ -1,4 +1,4 @@
-package cl.usm.libroabierto;
+package cl.usm.libroabierto.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+
+import cl.usm.libroabierto.DownloadImageTask;
+import cl.usm.libroabierto.R;
 
 public class SigninActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -85,7 +88,7 @@ public class SigninActivity extends AppCompatActivity implements
             //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
-            mStatusTextView.setText("No one loged in");
+            mStatusTextView.setText("No one logged in");
             //updateUI(false);
         }
     }

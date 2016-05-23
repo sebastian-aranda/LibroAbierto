@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center_vertical"
+    android:descendantFocusability="blocksDescendants">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/list_item_avatar_size"
+        android:layout_height="@dimen/list_item_avatar_size"
+        android:layout_marginRight="16dp"
+        android:foregroundGravity="left" />
+
+    <TextView
+        android:id="@+id/titleBookTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_toRightOf="@id/avatar"
+        android:gravity="right"
+        android:paddingBottom="5dp"
+        tools:text="Titulo Libro" />
+
+    <TextView
+        android:id="@+id/publicacion_emisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="10sp"
+        android:layout_below="@id/titleBookTextView"
+        android:layout_toRightOf="@id/avatar"
+        android:text="@string/publicacion_emisor"/>
+
+    <TextView
+        android:id="@+id/publicadoBookTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="10sp"
+        android:layout_below="@id/titleBookTextView"
+        android:layout_toRightOf="@id/publicacion_emisor"
+        android:gravity="right"
+        android:text="Juanito Perez"/>
+
+    <TextView
+        android:id="@+id/fecha_publicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="10sp"
+        android:layout_below="@id/publicacion_emisor"
+        android:layout_toRightOf="@id/avatar"
+        android:text="@string/fecha_publicacion"/>
+
+    <TextView
+        android:id="@+id/fechaPublicacionBookTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="10sp"
+        android:layout_below="@id/publicadoBookTextView"
+        android:layout_toRightOf="@id/fecha_publicacion"
+        android:gravity="right"
+        android:text="12/04/16"/>
+</RelativeLayout>
