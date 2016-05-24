@@ -62,50 +62,103 @@
                 android:orientation="vertical"
                 android:paddingTop="24dp">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="32dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:text="@string/publicado_label"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp">
 
-                <TextView
-                    android:id="@+id/usuarioPublicadoDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="48dp"
-                    android:text="Juanito Perez"/>
+                    <ImageView
+                        android:id="@+id/icon_publicado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_publ_account"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="32dp"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="32dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:text="@string/fecha_public_label"/>
+                    <TextView
+                        android:id="@+id/publicacion_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_toRightOf="@id/icon_publicado"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/publicado_label" />
 
-                <TextView
-                    android:id="@+id/fechaPublicacionDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="48dp"
-                    android:text="10/04/16"/>
+                    <TextView
+                        android:id="@+id/usuarioPublicadoDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/icon_publicado"
+                        android:layout_below="@id/publicacion_label"
+                        android:text="Juanito Perez"/>
+                </RelativeLayout>
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="32dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:text="@string/estado_label"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp">
 
-                <TextView
-                    android:id="@+id/estadoDetail"
+                    <ImageView
+                        android:id="@+id/icon_fecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_today"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="32dp"/>
+
+                    <TextView
+                        android:id="@+id/fecha_public_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_toRightOf="@id/icon_fecha"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/fecha_public_label"/>
+
+                    <TextView
+                        android:id="@+id/fechaPublicacionDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/icon_fecha"
+                        android:layout_below="@id/fecha_public_label"
+                        android:text="10/04/16"/>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="48dp"
-                    android:text="Usado"/>
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/icon_estado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_estado"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="32dp"/>
+
+                    <TextView
+                        android:id="@+id/estado_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_toRightOf="@id/icon_estado"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/estado_label"/>
+
+                    <TextView
+                        android:id="@+id/estadoDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/icon_estado"
+                        android:layout_below="@id/estado_label"
+                        android:text="Usado"/>
+                </RelativeLayout>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
