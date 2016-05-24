@@ -84,12 +84,10 @@ public class SigninActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG, "photoUrl:" + acct.getPhotoUrl());
             new DownloadImageTask(mContext, userPhoto, 96, 96).execute(acct.getPhotoUrl().toString());
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
-            //updateUI(true);
+            mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
+            //mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
         } else {
-            // Signed out, show unauthenticated UI.
-            mStatusTextView.setText("No one logged in");
-            //updateUI(false);
+            mStatusTextView.setText("No se ha podido logear, intente nuevamente");
         }
     }
 
