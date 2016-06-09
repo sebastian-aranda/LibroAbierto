@@ -86,6 +86,15 @@ public class SigninActivity extends AppCompatActivity implements
             new DownloadImageTask(mContext, userPhoto, 96, 96).execute(acct.getPhotoUrl().toString());
             mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
             //mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
+
+            new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        openMainActivity();
+                    }
+                },
+            2000);
+
         } else {
             mStatusTextView.setText("No se ha podido logear, intente nuevamente");
         }
@@ -113,5 +122,11 @@ public class SigninActivity extends AppCompatActivity implements
                 break;
             */
         }
+    }
+
+    private void openMainActivity(){
+        Intent intent= new Intent().setClass(SigninActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

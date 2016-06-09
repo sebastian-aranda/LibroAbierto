@@ -54,10 +54,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // Lines only for testing, delete after Sign in Corrections
-        Intent intent = new Intent(this, SigninActivity.class);
-        startActivity(intent);
     }
 
     @Override

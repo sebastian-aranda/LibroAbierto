@@ -18,14 +18,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        openMainActivity();
+                        openSigninActivity();
                     }
                 },
                 2000);
     }
 
-    private void openMainActivity(){
-        Intent intent= new Intent().setClass(SplashScreenActivity.this, MainActivity.class);
+    private void openSigninActivity(){
+        Intent intent= new Intent().setClass(SplashScreenActivity.this, SigninActivity.class);
         startActivity(intent);
         finish();
     }

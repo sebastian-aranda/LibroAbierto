@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">LibroAbierto</string>
 
-    <!-- SignIn -->
-    <string name="google_sign_response_message" formatted="false">¡Bienvenido: %s!</string>11
-
     <!-- Nav Menu -->
     <string name="opcion_publicaciones_title">Publicaciones</string>
     <string name="opcion_publicar_libro_title">Publicar Libro</string>
@@ -13,9 +10,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Seccion Login -->
+    <string name="google_sign_response_message" formatted="false">¡Bienvenido: %s!</string>
+    
     <!-- Sección Publicaciones -->
     <string name="publicacion_emisor">Publicado por:</string>
     <string name="fecha_publicacion">Fecha de Publicación:</string>
+
+    <!-- Sección Publicar Libro -->
+    <string name="btn_tomar_foto">Tomar Foto</string>
+    <string name="btn_seleccionar_foto">Seleccionar Foto</string>
+
+    <string name="hint_nombre">Ingrese nombre del libro</string>
+    <string name="hint_autor">Ingrese nombre del autor</string>
+    <string name="hint_editorial">Ingrese nombre de la editorial</string>
+    <string name="hint_largo">Ingrese el numero de paginas del libro</string>
 
     <!-- Sección Detalle Libro -->
     <string name="publicado_label">Publicado por</string>
