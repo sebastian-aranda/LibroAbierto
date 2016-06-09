@@ -8,65 +8,78 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/placeholder_img"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_gravity="center_horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="76dp"
+            android:gravity="center_horizontal">
 
-            <Button
-                android:id="@+id/tomarFoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_tomar_foto"/>
+            <ImageView
+                android:id="@+id/previewImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/placeholder_img"
+                android:scaleType="fitXY"/>
 
-            <Button
-                android:id="@+id/seleccionarFoto"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_seleccionar_foto"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/tomarFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_tomar_foto"/>
+
+                <Button
+                    android:id="@+id/seleccionarFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_seleccionar_foto"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/libro_nombre"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_nombre"/>
+
+                <EditText
+                    android:id="@+id/libro_autor"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_autor"/>
+
+                <EditText
+                    android:id="@+id/libro_editorial"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_editorial"/>
+
+                <EditText
+                    android:id="@+id/libro_largo"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_largo"/>
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/libro_nombre"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_nombre"/>
-
-            <EditText
-                android:id="@+id/libro_autor"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_autor"/>
-
-            <EditText
-                android:id="@+id/libro_editorial"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_editorial"/>
-
-            <EditText
-                android:id="@+id/libro_largo"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_largo"/>
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <include
         layout="@layout/app_bar_main"

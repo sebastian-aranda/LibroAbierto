@@ -1,11 +1,15 @@
 package cl.usm.libroabierto.activities;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import cl.usm.libroabierto.R;
 
@@ -38,9 +44,11 @@ public class PublicarLibroActivity extends AppCompatActivity
 
     private Uri fileUri;
 
+    private ImageView previewImage;
     private Button btnTakePicture, btnSelectPicture;
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int GALLERY_IMAGE_REQUEST_CODE = 200;
     private static final String IMAGE_DIRECTORY_NAME = "libroabierto_fotos";
 
     @Override
@@ -66,13 +74,14 @@ public class PublicarLibroActivity extends AppCompatActivity
         opcionPublicarLibro.setChecked(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        previewImage = (ImageView) findViewById(R.id.previewImage);
 
         btnTakePicture = (Button) findViewById(R.id.tomarFoto);
         btnSelectPicture =(Button) findViewById(R.id.seleccionarFoto);
@@ -87,7 +96,7 @@ public class PublicarLibroActivity extends AppCompatActivity
         btnSelectPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //selectPicture();
+                selectPicture();
             }
         });
     }
@@ -103,6 +112,61 @@ public class PublicarLibroActivity extends AppCompatActivity
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
+    public void selectPicture(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_IMAGE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("file_uri", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK){
+                showPicture();
+            }
+            else if (resultCode == RESULT_CANCELED)
+                Toast.makeText(getApplicationContext(), "Captura cancelada", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getApplicationContext(), "Error al capturar la imagen", Toast.LENGTH_LONG).show();
+        }
+        else if (requestCode == GALLERY_IMAGE_REQUEST_CODE){
+            Uri image = data.getData();
+            Bitmap bitmap = null;
+            try{
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+                previewImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showPicture(){
+        String path = fileUri.getPath();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        // down sizing image as it throws OutOfMemory Exception for larger
+        // images
+        options.inSampleSize = 8;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        previewImage.setImageBitmap(bitmap);
+    }
+
     public Uri getOutputMediaFileUri() {
         return Uri.fromFile(getOutputMediaFile());
     }
@@ -114,7 +178,7 @@ public class PublicarLibroActivity extends AppCompatActivity
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.d(TAG, "Oops! Failed create "+ IMAGE_DIRECTORY_NAME + " directory");
+                Log.d(TAG, "Error al crear el directorio"+ IMAGE_DIRECTORY_NAME);
                 return null;
             }
         }
