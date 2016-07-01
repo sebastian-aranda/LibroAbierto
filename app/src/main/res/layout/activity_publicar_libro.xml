@@ -78,6 +78,12 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_largo"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_publicar_libro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_publicar_libro"/>
         </LinearLayout>
     </ScrollView>
 

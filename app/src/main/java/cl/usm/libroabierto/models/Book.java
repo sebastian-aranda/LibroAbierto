@@ -4,24 +4,29 @@ package cl.usm.libroabierto.models;
  * Created by Slavko Cotoras on 22-05-2016.
  */
 public class Book {
-
     private int bookID;
     private String titulo;
     private String autor;
-    private int usuario;
+    private String editorial;
+    private int largo;
     private String descripcion;
-    private String drawable;
-    private String fechaPublicacion;
+    private String ruta_fotografia;
+    private int id_usuario;
+    private String fecha_publicacion;
 
-    public Book(int id, String titulo, String autor, int usuario, String descripcion, String drawable, String fechaPublicacion)
+    private String drawable;
+
+    public Book(int id, String titulo, String autor, String editorial, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
     {
         this.bookID = id;
         this.titulo = titulo;
         this.autor = autor;
-        this.usuario = usuario;
+        this.editorial = editorial;
+        this.largo = largo;
         this.descripcion = descripcion;
-        this.drawable = drawable;
-        this.fechaPublicacion = fechaPublicacion;
+        this.ruta_fotografia = ruta_fotografia;
+        this.id_usuario = id_usuario;
+        this.fecha_publicacion = fecha_publicacion;
     }
 
     public int getBookID() { return bookID; }
@@ -30,7 +35,7 @@ public class Book {
         return titulo;
     }
 
-    public void setTitulo(String nombre) {
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
@@ -42,12 +47,20 @@ public class Book {
         this.autor = autor;
     }
 
-    public int getUsuario() {
-        return usuario;
+    public String getEditorial() {
+        return editorial;
     }
 
-    public void setUsuario(int usuario) {
-        this.usuario = usuario;
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
+    }
+
+    public int getLargo() {
+        return largo;
+    }
+
+    public void setLargo(int largo) {
+        this.largo = largo;
     }
 
     public String getDescripcion() {
@@ -58,18 +71,29 @@ public class Book {
         this.descripcion = descripcion;
     }
 
-    public String getDrawable() {
-        return drawable;
+    public String getRuta_fotografia() {
+        return ruta_fotografia;
     }
 
-    public void setDrawable(String drawable)
-    {
-        this.drawable = drawable;
+    public void setRuta_fotografia(String ruta_fotografia) {
+        this.ruta_fotografia = ruta_fotografia;
     }
 
-    public String getFechaPublicacion() { return fechaPublicacion; }
+    public int getId_usuario() {
+        return id_usuario;
+    }
 
-    public void setFechaPublicacion(String fechaPublicacion) { this.fechaPublicacion = fechaPublicacion; }
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    public String getFecha_publicacion() {
+        return fecha_publicacion;
+    }
+
+    public void setFecha_publicacion(String fecha_publicacion) {
+        this.fecha_publicacion = fecha_publicacion;
+    }
 
     @Override
     public String toString() {

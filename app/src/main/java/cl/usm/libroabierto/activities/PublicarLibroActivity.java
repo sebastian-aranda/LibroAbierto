@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -25,13 +26,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import cl.usm.libroabierto.R;
+import cl.usm.libroabierto.models.ApiResponse;
+import cl.usm.libroabierto.models.Book;
+import cl.usm.libroabierto.network.LibroAbiertoAPI;
+import cl.usm.libroabierto.network.LibroAbiertoClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class PublicarLibroActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Callback<ApiResponse> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -45,7 +56,7 @@ public class PublicarLibroActivity extends AppCompatActivity
     private Uri fileUri;
 
     private ImageView previewImage;
-    private Button btnTakePicture, btnSelectPicture;
+    private Button btnTakePicture, btnSelectPicture, btnPublishBook;
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int GALLERY_IMAGE_REQUEST_CODE = 200;
@@ -85,6 +96,7 @@ public class PublicarLibroActivity extends AppCompatActivity
 
         btnTakePicture = (Button) findViewById(R.id.tomarFoto);
         btnSelectPicture =(Button) findViewById(R.id.seleccionarFoto);
+        btnPublishBook = (Button) findViewById(R.id.btn_publicar_libro);
 
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +109,13 @@ public class PublicarLibroActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 selectPicture();
+            }
+        });
+
+        btnPublishBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                publishBook();
             }
         });
     }
@@ -115,6 +134,21 @@ public class PublicarLibroActivity extends AppCompatActivity
     public void selectPicture(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, GALLERY_IMAGE_REQUEST_CODE);
+    }
+
+    public void publishBook(){
+        String titulo = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
+        String autor = ((EditText)findViewById(R.id.libro_autor)).getText().toString();
+        String editorial = ((EditText)findViewById(R.id.libro_editorial)).getText().toString();
+        String largo = ((EditText)findViewById(R.id.libro_largo)).getText().toString();
+        //String descripcion = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
+        //String ruta_fotografia = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
+        //int id_usuario = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
+
+        Retrofit retrofit = LibroAbiertoClient.getClient();
+        LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+        Call<ApiResponse> call = api.addBook(titulo,autor,editorial,0,"","", 0);
+        call.enqueue(this);
     }
 
     @Override
@@ -143,9 +177,11 @@ public class PublicarLibroActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Error al capturar la imagen", Toast.LENGTH_LONG).show();
         }
         else if (requestCode == GALLERY_IMAGE_REQUEST_CODE){
-            Uri image = data.getData();
+            Uri image = null;
             Bitmap bitmap = null;
+            if (data == null) return;
             try{
+                image = data.getData();
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
                 previewImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e){
@@ -219,5 +255,18 @@ public class PublicarLibroActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+        if(response.isSuccessful()){
+            Log.d("Retrofit response", response.body().toString());
+            Toast.makeText(this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFailure(Call<ApiResponse> call, Throwable t) {
+        Log.d("RetrofitFailure", t.toString());
     }
 }

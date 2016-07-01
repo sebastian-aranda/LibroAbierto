@@ -26,6 +26,8 @@
     <string name="hint_editorial">Ingrese nombre de la editorial</string>
     <string name="hint_largo">Ingrese el numero de paginas del libro</string>
 
+    <string name="btn_publicar_libro">Publicar Libro</string>
+
     <!-- Sección Detalle Libro -->
     <string name="publicado_label">Publicado por</string>
     <string name="fecha_public_label">Fecha de Publicación</string>

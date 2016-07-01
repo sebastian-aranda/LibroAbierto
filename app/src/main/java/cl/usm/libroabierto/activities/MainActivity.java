@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +22,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import cl.usm.libroabierto.R;
 import cl.usm.libroabierto.models.Book;
+import cl.usm.libroabierto.models.Usuario;
+import cl.usm.libroabierto.network.LibroAbiertoAPI;
+import cl.usm.libroabierto.network.LibroAbiertoClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener ,
+        Callback<List<Book>> {
 
     private NavigationView navMenu;
     private Menu lateral;
@@ -34,12 +47,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem opcionProfile;
 
     // Books Test Data
-    Book[] books = {
-            new Book(1,"Harry Potter y el Caliz de Fuego", "Autor Uno", 10, "Una descripcion llamativa", "http://mla-s2-p.mlstatic.com/harry-potter-y-el-caliz-de-fuego-ano-4-tapa-dura-13740-MLA20080157434_042014-F.jpg", "10/04/16"),
-            new Book(2,"100 Años de Soledad", "Autor Dos", 12, "Otra descripcion llamativa", "http://static.animalpolitico.com/wp-content/uploads/2014/05/Libro-100-456x304.jpg", "12/02/16"),
-            new Book(3,"Matemáticas 8vo Básico", "Autor Tres", 14, "Una descripcion con muchos números", "http://img.yapo.cl/images/47/4729479539.jpg", "9/04/16"),
-            new Book(4,"Algun Otro Libro", "Autor Cuatro", 16, "Alguna otra descripcion", "http://www.radiozero.cl/static/2016/04/libros.jpg", "20/03/16")
-    };
+    /*Book[] books = {
+            new Book(1,"Harry Potter y el Caliz de Fuego", "Autor Uno", "Editorial LA", 100, "Una descripcion llamativa", "http://mla-s2-p.mlstatic.com/harry-potter-y-el-caliz-de-fuego-ano-4-tapa-dura-13740-MLA20080157434_042014-F.jpg", 10,"10/04/16"),
+            new Book(2,"100 Años de Soledad", "Autor Dos", "Editorial LA", 120, "Otra descripcion llamativa", "http://static.animalpolitico.com/wp-content/uploads/2014/05/Libro-100-456x304.jpg", 10,"12/02/16"),
+            new Book(3,"Matemáticas 8vo Básico", "Autor Tres", "Editorial LA", 120, "Una descripcion con muchos números", "http://img.yapo.cl/images/47/4729479539.jpg", 10, "9/04/16"),
+            new Book(4,"Algun Otro Libro", "Autor Cuatro", "Editorial LA", 120, "Alguna otra descripcion", "http://www.radiozero.cl/static/2016/04/libros.jpg", 10, "20/03/16")
+    };*/
+    ArrayList<Book> books = new ArrayList<>();
+    private BooksAdapter booksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Book List View
         setListView();
+
+        Retrofit retrofit = LibroAbiertoClient.getClient();
+        LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+        Call<List<Book>> call = api.getBooks();
+        call.enqueue(this);
     }
 
     /* ===========================
@@ -83,11 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setListView() {
 
         ListView listViewLibros = (ListView) findViewById(R.id.bookListView);
-
-        BooksAdapter booksAdapter = new BooksAdapter(this,
-                R.layout.book_row_in_list,
-                books);
-
+        booksAdapter = new BooksAdapter(this, R.layout.book_row_in_list, books);
         listViewLibros.setAdapter(booksAdapter);
 
         listViewLibros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,14 +114,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent intent = new Intent(getApplicationContext(),
                         BookDetailActivity.class);
-                intent.putExtra("BOOK_ID",selectedBook.getBookID());
+                intent.putExtra("BOOK_ID", selectedBook.getBookID());
                 //Test Data - Delete after Database setting
-                intent.putExtra("BOOK_TITLE",selectedBook.getTitulo());
-                intent.putExtra("BOOK_IMAGE", selectedBook.getDrawable());
+                intent.putExtra("BOOK_TITLE", selectedBook.getTitulo());
+                intent.putExtra("BOOK_IMAGE", selectedBook.getRuta_fotografia());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+        if(response.isSuccessful()){
+            books.addAll(response.body());
+            booksAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onFailure(Call<List<Book>> call, Throwable t) {
+        Log.d("RetrofitFailure", t.toString());
+    }
+
+    // Book Adapter for Book List
+    private class BooksAdapter extends ArrayAdapter<Book> {
+
+        public BooksAdapter(Context context, int resource, ArrayList<Book> objects) {
+            super(context, resource,R.id.titleBookTextView, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View row = super.getView(position, convertView, parent);
+
+            Book book = getItem(position);
+
+            final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
+            Retrofit retrofit = LibroAbiertoClient.getClient();
+            LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+            //TODO Obtener id_usuario logeado con google
+            Call<Usuario> call = api.getUsuario("0");
+            call.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    publicadoTextView.setText(response.body().getNombre());
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Log.d("RetrofitFailure", t.toString());
+                }
+            });
+
+            TextView fechaTextView = (TextView)row.findViewById(R.id.fechaPublicacionBookTextView);
+            fechaTextView.setText(book.getFecha_publicacion());
+
+            ImageView avatarImageView = (ImageView)row.findViewById(R.id.avatar);
+            Glide.with(MainActivity.this).load(book.getRuta_fotografia()).centerCrop().into(avatarImageView);
+
+            return row;
+        }
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -138,34 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    // Book Adapter for Book List
-    private class BooksAdapter extends ArrayAdapter<Book> {
-
-        public BooksAdapter(Context context, int resource, Book[] objects) {
-            super(context, resource,R.id.titleBookTextView, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            View row = super.getView(position, convertView, parent);
-
-            Book book = getItem(position);
-
-            TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
-            //Dato en la clase entregada en un int, la cual posteriormente se obtendra el nombre a traves del ID
-            publicadoTextView.setText("Juan Perez");
-
-            TextView fechaTextView = (TextView)row.findViewById(R.id.fechaPublicacionBookTextView);
-            fechaTextView.setText(book.getFechaPublicacion());
-
-            ImageView avatarImageView = (ImageView)row.findViewById(R.id.avatar);
-            Glide.with(MainActivity.this).load(book.getDrawable()).centerCrop().into(avatarImageView);
-
-            return row;
-        }
     }
 }
 
