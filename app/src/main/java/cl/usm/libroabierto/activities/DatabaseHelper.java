@@ -49,19 +49,20 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void createUsuario(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS usuario");
         db.execSQL("CREATE TABLE usuario (id INTEGER PRIMARY KEY, nombre TEXT, telefono TEXT, email TEXT UNIQUE, foto TEXT)");
-        db.execSQL("INSERT INTO usuario (id, nombre, telefono, email, foto) VALUES (0, '', '', '', '')");
+        db.execSQL("INSERT INTO usuario (id, nombre, telefono, email, foto) VALUES (0,'', '', '', '')");
     }
 
-    public void updateUsuario(String nombre, String telefono, String email, String foto){
+    public void updateUsuario(int old_id, int new_id, String nombre, String telefono, String email, String foto){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("id", new_id);
         values.put("nombre", nombre);
         values.put("telefono", telefono);
         values.put("email", email);
         values.put("foto", foto);
 
-        db.update("usuario", values, " id = ?", new String[] {"0"});
+        db.update("usuario", values, " id = ?", new String[] {String.valueOf(old_id)});
 
         db.close();
 
