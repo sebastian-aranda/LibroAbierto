@@ -8,6 +8,7 @@ public class Book {
     private String titulo;
     private String autor;
     private String editorial;
+    private int estado;
     private int largo;
     private String descripcion;
     private String ruta_fotografia;
@@ -16,12 +17,13 @@ public class Book {
 
     private String drawable;
 
-    public Book(int id, String titulo, String autor, String editorial, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
+    public Book(int id, String titulo, String autor, String editorial, int estado, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
     {
         this.bookID = id;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
+        this.estado = estado;
         this.largo = largo;
         this.descripcion = descripcion;
         this.ruta_fotografia = ruta_fotografia;
@@ -61,6 +63,14 @@ public class Book {
 
     public void setLargo(int largo) {
         this.largo = largo;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public String getDescripcion() {

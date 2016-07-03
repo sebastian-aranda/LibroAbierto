@@ -22,10 +22,18 @@
     <string name="btn_tomar_foto">Tomar Foto</string>
     <string name="btn_seleccionar_foto">Seleccionar Foto</string>
 
-    <string name="hint_nombre">Ingrese nombre del libro</string>
-    <string name="hint_autor">Ingrese nombre del autor</string>
-    <string name="hint_editorial">Ingrese nombre de la editorial</string>
-    <string name="hint_largo">Ingrese el numero de paginas del libro</string>
+    <string name="label_nombre">Nombre:</string>
+    <string name="label_autor">Autor:</string>
+    <string name="label_editorial">Editorial:</string>
+    <string name="label_descripcion">Descripción:</string>
+    <string name="label_estado">Estado:</string>
+    <string name="label_paginas">N°Páginas:</string>
+
+    <string name="hint_nombre">Nombre del Libro</string>
+    <string name="hint_autor">Nombre del Autor del Libro</string>
+    <string name="hint_editorial">Editorial del Libro</string>
+    <string name="hint_largo">Cantidad de Páginas del Libro</string>
+    <string name="hint_descripcion">Descripción del Libro</string>
 
     <string name="btn_publicar_libro">Publicar Libro</string>
 

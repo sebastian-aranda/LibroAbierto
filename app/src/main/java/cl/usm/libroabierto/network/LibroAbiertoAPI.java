@@ -22,5 +22,5 @@ public interface LibroAbiertoAPI {
 
     @FormUrlEncoded
     @POST("libroabierto_api.php?accion=agregarLibro")
-    Call<ApiResponse> addBook(@Field("titulo") String titulo, @Field("autor") String autor, @Field("editorial") String editorial, @Field("largo") int largo, @Field("descripcion") String descripcion, @Field("ruta_fotografia") String ruta_fotografia, @Field("id_usuario") int id_usuario);
+    Call<ApiResponse> addBook(@Field("titulo") String titulo, @Field("autor") String autor, @Field("editorial") String editorial, @Field("estado") int estado, @Field("largo") int largo, @Field("descripcion") String descripcion, @Field("ruta_fotografia") String ruta_fotografia, @Field("id_usuario") int id_usuario);
 }

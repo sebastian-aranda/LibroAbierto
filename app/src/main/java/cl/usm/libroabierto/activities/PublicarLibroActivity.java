@@ -26,9 +26,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import cl.usm.libroabierto.R;
 import cl.usm.libroabierto.models.ApiResponse;
@@ -118,6 +120,17 @@ public class PublicarLibroActivity extends AppCompatActivity
                 publishBook();
             }
         });
+
+        final ToggleButton toggleState = (ToggleButton) findViewById(R.id.toggleStateButton);
+        toggleState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                } else {
+                    // The toggle is disabled
+                }
+            }
+        });
     }
 
     public void takePicture(){
@@ -140,15 +153,34 @@ public class PublicarLibroActivity extends AppCompatActivity
         String titulo = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
         String autor = ((EditText)findViewById(R.id.libro_autor)).getText().toString();
         String editorial = ((EditText)findViewById(R.id.libro_editorial)).getText().toString();
-        String largo = ((EditText)findViewById(R.id.libro_largo)).getText().toString();
-        //String descripcion = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
+        int largo = Integer.parseInt(((EditText) findViewById(R.id.libro_largo)).getText().toString());
+        String descripcion = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
+        int estado = (((ToggleButton) findViewById(R.id.toggleStateButton)).isChecked())? 1 : 0;
+        //int estado = Integer.parseInt(((ToggleButton) findViewById(R.id.toggleStateButton)).getText().toString());
         //String ruta_fotografia = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
         //int id_usuario = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
 
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<ApiResponse> call = api.addBook(titulo,autor,editorial,0,"","", 0);
+        Call<ApiResponse> call = api.addBook(titulo,autor,editorial,estado,largo, descripcion,"", 0);
         call.enqueue(this);
+
+        // Limpia el Formulario tras el Post
+        cleanBookForm();
+    }
+
+    // Limpia el Formulario de Publicar Libro
+    public void cleanBookForm(){
+        ((EditText)findViewById(R.id.libro_nombre)).setText("");
+        ((EditText)findViewById(R.id.libro_autor)).setText("");
+        ((EditText)findViewById(R.id.libro_editorial)).setText("");
+        ((EditText)findViewById(R.id.libro_largo)).setText("");
+        ((EditText)findViewById(R.id.libro_descripcion)).setText("");
+        ((ToggleButton)findViewById(R.id.toggleStateButton)).setChecked(false);
+
+        ((ImageView)findViewById(R.id.previewImage)).setImageResource(R.drawable.placeholder_img);
+        //String ruta_fotografia = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
+        //int id_usuario = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
     }
 
     @Override
