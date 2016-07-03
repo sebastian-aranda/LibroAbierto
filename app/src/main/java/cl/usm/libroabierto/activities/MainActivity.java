@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
-
     ArrayList<Book> books = new ArrayList<>();
     private BooksAdapter booksAdapter;
 

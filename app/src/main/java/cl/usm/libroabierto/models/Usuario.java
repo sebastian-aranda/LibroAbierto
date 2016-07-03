@@ -5,12 +5,14 @@ public class Usuario {
     private String nombre;
     private String telefono;
     private String email;
+    private String foto;
 
-    public Usuario(String nombre, String telefono, int id, String email) {
+    public Usuario(int id, String nombre, String telefono, String email, String foto) {
+        this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
-        this.id = id;
         this.email = email;
+        this.foto = foto;
     }
 
     public int getId() {
@@ -43,6 +45,14 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     @Override
