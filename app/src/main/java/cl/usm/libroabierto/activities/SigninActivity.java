@@ -8,31 +8,37 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
 
 import cl.usm.libroabierto.DownloadImageTask;
 import cl.usm.libroabierto.R;
+import cl.usm.libroabierto.models.Usuario;
 
 public class SigninActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-    private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
-
     private Context mContext;
+    private static final String TAG = "SignInActivity";
+
+    private static DatabaseHelper db;
 
     private GoogleApiClient mGoogleApiClient;
-    private ImageView userPhoto;
+    private static final int RC_SIGN_IN = 9001;
+
     private TextView mStatusTextView;
 
     @Override
@@ -41,20 +47,24 @@ public class SigninActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_signin);
 
         mContext = this;
+        db = new DatabaseHelper(this);
 
-        userPhoto = (ImageView) findViewById(R.id.sign_in_photo);
         mStatusTextView = (TextView) findViewById(R.id.status);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         //Controlando Sesion con Google Sign In Api
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PROFILE))
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestProfile()
                 .requestEmail()
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
                 .build();
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -79,22 +89,28 @@ public class SigninActivity extends AppCompatActivity implements
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            Log.d(TAG, "photoUrl:" + acct.getPhotoUrl());
-            new DownloadImageTask(mContext, userPhoto, 96, 96).execute(acct.getPhotoUrl().toString());
-            mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
-            //mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
+            Usuario usuario = db.getUsuario();
+            if (usuario.getEmail().equals("")){
+                String nombre = (acct.getDisplayName() != null ? acct.getDisplayName() : "");
+                String email = (acct.getEmail() != null ? acct.getEmail() : "");
+                String telefono = "";
+                String foto = (acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "");
+
+                db.updateUsuario(nombre, telefono, email, foto);
+                mStatusTextView.setText("Te has registrado exitosamente " + nombre + "!");
+            }
+            else{
+                mStatusTextView.setText("Bienvenido nuevamente " + usuario.getNombre() + "!");
+            }
 
             new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         openMainActivity();
                     }
-                },
-            2000);
-
+                }, 1000);
         } else {
             mStatusTextView.setText("No se ha podido logear, intente nuevamente");
         }
