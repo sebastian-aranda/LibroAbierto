@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 
 public class PublicarLibroActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        Callback<ApiResponse> {
+        Callback<ApiResponse>{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 

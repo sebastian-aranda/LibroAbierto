@@ -46,13 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
-    // Books Test Data
-    /*Book[] books = {
-            new Book(1,"Harry Potter y el Caliz de Fuego", "Autor Uno", "Editorial LA", 100, "Una descripcion llamativa", "http://mla-s2-p.mlstatic.com/harry-potter-y-el-caliz-de-fuego-ano-4-tapa-dura-13740-MLA20080157434_042014-F.jpg", 10,"10/04/16"),
-            new Book(2,"100 Años de Soledad", "Autor Dos", "Editorial LA", 120, "Otra descripcion llamativa", "http://static.animalpolitico.com/wp-content/uploads/2014/05/Libro-100-456x304.jpg", 10,"12/02/16"),
-            new Book(3,"Matemáticas 8vo Básico", "Autor Tres", "Editorial LA", 120, "Una descripcion con muchos números", "http://img.yapo.cl/images/47/4729479539.jpg", 10, "9/04/16"),
-            new Book(4,"Algun Otro Libro", "Autor Cuatro", "Editorial LA", 120, "Alguna otra descripcion", "http://www.radiozero.cl/static/2016/04/libros.jpg", 10, "20/03/16")
-    };*/
+
     ArrayList<Book> books = new ArrayList<>();
     private BooksAdapter booksAdapter;
 
@@ -88,12 +82,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         // Book List View
-        setListView();
-
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
         Call<List<Book>> call = api.getBooks();
         call.enqueue(this);
+
+        setListView();
     }
 
     /* ===========================
@@ -110,15 +104,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Load book Data for Detail Activity
-                Book selectedBook = (Book) adapterView.getAdapter().getItem(position);
+                final Book selectedBook = (Book) adapterView.getAdapter().getItem(position);
 
                 Intent intent = new Intent(getApplicationContext(),
                         BookDetailActivity.class);
-                intent.putExtra("BOOK_ID", selectedBook.getBookID());
-                //Test Data - Delete after Database setting
-                intent.putExtra("BOOK_TITLE", selectedBook.getTitulo());
-                intent.putExtra("BOOK_IMAGE", selectedBook.getRuta_fotografia());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+                intent.putExtra("BOOK_ID", 1);
+                Log.d("STATEBOOK", String.valueOf(selectedBook.getBookID()));
                 startActivity(intent);
             }
         });
@@ -155,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
             //TODO Obtener id_usuario logeado con google
-            Call<Usuario> call = api.getUsuario("0");
+            Call<Usuario> call = api.getUsuario(0);
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {

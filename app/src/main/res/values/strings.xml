@@ -11,6 +11,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Seccion Login -->
+    <string name="mensaje_login">LibroAbierto requiere acceder a tu informacion de usuario para poder desplegar sus funcionalidades:</string>
     <string name="google_sign_response_message" formatted="false">¡Bienvenido: %s!</string>
     
     <!-- Sección Publicaciones -->
@@ -33,6 +34,9 @@
     <string name="hint_editorial">Editorial del Libro</string>
     <string name="hint_largo">Cantidad de Páginas del Libro</string>
     <string name="hint_descripcion">Descripción del Libro</string>
+
+    <string name="estado_on">Nuevo</string>
+    <string name="estado_off">Usado</string>
 
     <string name="btn_publicar_libro">Publicar Libro</string>
 
