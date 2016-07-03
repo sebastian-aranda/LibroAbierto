@@ -84,7 +84,7 @@ public class SigninActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG, "photoUrl:" + acct.getPhotoUrl());
             new DownloadImageTask(mContext, userPhoto, 96, 96).execute(acct.getPhotoUrl().toString());
-            mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
+            mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName()));
             //mStatusTextView.setText(getString(R.string.google_sign_response_message, acct.getDisplayName(), acct.getEmail(), acct.getId(), acct.getPhotoUrl()));
 
             new android.os.Handler().postDelayed(
