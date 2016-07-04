@@ -20,6 +20,9 @@ public interface LibroAbiertoAPI {
     @GET("libroabierto_api.php?accion=obtenerUsuario")
     Call<Usuario> getUsuario(@Query("email") String email);
 
+    @GET("libroabierto_api.php?accion=obtenerNombreUsuarioById")
+    Call<Usuario> getUserNameById(@Query("id_usuario") int id_usuario);
+
     @GET("libroabierto_api.php?accion=obtenerLibro")
     Call<Book> getBook(@Query("id_libro") int id_libro);
 

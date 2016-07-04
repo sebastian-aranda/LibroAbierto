@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(getApplicationContext(),
                         BookDetailActivity.class);
 
-                intent.putExtra("BOOK_ID", 1);
-                Log.d("STATEBOOK", String.valueOf(selectedBook.getBookID()));
+                intent.putExtra("BOOK_ID", selectedBook.getId());
+
                 startActivity(intent);
             }
         });
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
             //TODO Obtener id_usuario logeado con google
-            Call<Usuario> call = api.getUsuario(0);
+            Call<Usuario> call = api.getUsuario("0");
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {

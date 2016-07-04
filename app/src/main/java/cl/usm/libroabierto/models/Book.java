@@ -4,7 +4,7 @@ package cl.usm.libroabierto.models;
  * Created by Slavko Cotoras on 22-05-2016.
  */
 public class Book {
-    private int bookID;
+    private int id;
     private String titulo;
     private String autor;
     private String editorial;
@@ -15,11 +15,9 @@ public class Book {
     private int id_usuario;
     private String fecha_publicacion;
 
-    private String drawable;
-
     public Book(int id, String titulo, String autor, String editorial, int estado, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
     {
-        this.bookID = id;
+        this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
@@ -31,7 +29,7 @@ public class Book {
         this.fecha_publicacion = fecha_publicacion;
     }
 
-    public int getBookID() { return bookID; }
+    public int getId() { return id; }
 
     public String getTitulo() {
         return titulo;

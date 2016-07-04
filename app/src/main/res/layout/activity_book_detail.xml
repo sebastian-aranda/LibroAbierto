@@ -91,8 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/icon_publicado"
-                        android:layout_below="@id/publicacion_label"
-                        android:text="Juanito Perez"/>
+                        android:layout_below="@id/publicacion_label"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -124,8 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/icon_fecha"
-                        android:layout_below="@id/fecha_public_label"
-                        android:text="10/04/16"/>
+                        android:layout_below="@id/fecha_public_label"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -156,8 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_toRightOf="@id/icon_estado"
-                        android:layout_below="@id/estado_label"
-                        android:text="Usado"/>
+                        android:layout_below="@id/estado_label"/>
                 </RelativeLayout>
 
                 <android.support.v7.widget.CardView
@@ -179,8 +176,7 @@
                         <TextView
                             android:id="@+id/descriptionDetail"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Una bonita y llamativa descripción" />
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 

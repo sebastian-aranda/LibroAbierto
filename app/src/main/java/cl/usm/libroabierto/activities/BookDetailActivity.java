@@ -25,9 +25,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BookDetailActivity extends AppCompatActivity {
-
-    // TEST DATA - Data Dummy de la base de datos
+public class BookDetailActivity extends AppCompatActivity{
+    
     private int bookID;
     private String bookTitle;
     private String bookAutor;
@@ -39,14 +38,9 @@ public class BookDetailActivity extends AppCompatActivity {
     private String bookImageUrl;
     private int userID;
     private String userPublish;
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbar;
 
-/*    private String bookTitle;
-    private String bookImageURL;
-    private String username = "Juan Perez";
-    private String fechaPublc = "10/04/16";
-    private String estado = "Usado";
-    private String descripcion = "Una descripción llamativa para este libro llamativo para que llame la atención a la gente llamativa por los libros llamativos";
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +49,15 @@ public class BookDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             bookID = extras.getInt("BOOK_ID");
-            Log.d("STATEBOOK", String.valueOf(bookID));
         }
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
+        setSupportActionBar(toolbar);
+        // Action Bar with back arrow
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Retrofit Book ID
         Retrofit retrofit = LibroAbiertoClient.getClient();
@@ -65,16 +66,37 @@ public class BookDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<Book>() {
             @Override
             public void onResponse(Call<Book> call, Response<Book> response) {
-                bookTitle = response.body().getTitulo();
-                bookAutor = response.body().getAutor();
-                bookEditorial = response.body().getEditorial();
-                bookEstado = response.body().getEstado();
-                bookDescripcion = response.body().getDescripcion();
-                bookPages = response.body().getLargo();
-                bookImageUrl = response.body().getRuta_fotografia();
-                bookFechaPublicacion = response.body().getFecha_publicacion();
+                if (response.isSuccessful()) {
+                    bookTitle = response.body().getTitulo();
+                    bookAutor = response.body().getAutor();
+                    bookEditorial = response.body().getEditorial();
+                    bookEstado = response.body().getEstado();
+                    bookDescripcion = response.body().getDescripcion();
+                    bookPages = response.body().getLargo();
+                    bookImageUrl = response.body().getRuta_fotografia();
+                    bookFechaPublicacion = response.body().getFecha_publicacion();
+                    userID = response.body().getId_usuario();
 
-                userID = response.body().getId_usuario();
+                    // Set book title as toolbar title
+                    toolbar.setTitle(bookTitle);
+                    collapsingToolbar.setTitle(bookTitle);
+
+                    final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+                    Glide.with(BookDetailActivity.this).load(bookImageUrl).centerCrop().into(imageView);
+
+                    final TextView fechaPublicaciónView = (TextView) findViewById(R.id.fechaPublicacionDetail);
+                    fechaPublicaciónView.setText(bookFechaPublicacion);
+
+                    final TextView estadoView = (TextView) findViewById(R.id.estadoDetail);
+                    if (bookEstado == 1) {
+                        estadoView.setText(R.string.estado_on);
+                    } else {
+                        estadoView.setText(R.string.estado_off);
+                    }
+
+                    final TextView descriptionView = (TextView) findViewById(R.id.descriptionDetail);
+                    descriptionView.setText(bookDescripcion);
+                }
             }
 
             @Override
@@ -83,11 +105,17 @@ public class BookDetailActivity extends AppCompatActivity {
             }
         });
 
-        Call<Usuario> callUser = api.getUsuario(userID);
+        Call<Usuario> callUser = api.getUserNameById(userID);
         callUser.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                userPublish = response.body().getNombre();
+
+                if (response.isSuccessful()) {
+                    userPublish = response.body().getNombre();
+
+                    final TextView userView = (TextView) findViewById(R.id.usuarioPublicadoDetail);
+                    userView.setText(userPublish);
+                }
             }
 
             @Override
@@ -96,20 +124,6 @@ public class BookDetailActivity extends AppCompatActivity {
             }
         });
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // Set book title as toolbar title
-        toolbar.setTitle(bookTitle);
-        setSupportActionBar(toolbar);
-
-        // Action Bar with back arrow
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(bookTitle);
-
-        loadBackdrop();
     }
 
     private void loadBackdrop() {
