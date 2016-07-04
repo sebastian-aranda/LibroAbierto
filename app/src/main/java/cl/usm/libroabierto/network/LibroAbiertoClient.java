@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LibroAbiertoClient {
     //REST
-    public static final String BASE_URL = "http://zardonix.xyz/libro_abierto/";
+    public static final String BASE_URL = "http://libroabierto.cotoras.cl/";
 
     public static Retrofit getClient() {
 

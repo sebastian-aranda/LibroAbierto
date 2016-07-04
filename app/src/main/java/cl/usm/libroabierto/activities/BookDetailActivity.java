@@ -77,6 +77,28 @@ public class BookDetailActivity extends AppCompatActivity{
                     bookFechaPublicacion = response.body().getFecha_publicacion();
                     userID = response.body().getId_usuario();
 
+                    // Obtener el Nombre del Usuario
+                    Retrofit retrofit = LibroAbiertoClient.getClient();
+                    LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+                    Call<Usuario> callUser = api.getUserNameById(userID);
+                    callUser.enqueue(new Callback<Usuario>() {
+                        @Override
+                        public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+
+                            if (response.isSuccessful()) {
+                                userPublish = response.body().getNombre();
+
+                                final TextView userView = (TextView) findViewById(R.id.usuarioPublicadoDetail);
+                                userView.setText(userPublish);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Usuario> call, Throwable t) {
+                            Log.d("RetrofitFailure", t.toString());
+                        }
+                    });
+
                     // Set book title as toolbar title
                     toolbar.setTitle(bookTitle);
                     collapsingToolbar.setTitle(bookTitle);
@@ -104,26 +126,6 @@ public class BookDetailActivity extends AppCompatActivity{
                 Log.d("RetrofitFailure", t.toString());
             }
         });
-
-        Call<Usuario> callUser = api.getUserNameById(userID);
-        callUser.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-
-                if (response.isSuccessful()) {
-                    userPublish = response.body().getNombre();
-
-                    final TextView userView = (TextView) findViewById(R.id.usuarioPublicadoDetail);
-                    userView.setText(userPublish);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-                Log.d("RetrofitFailure", t.toString());
-            }
-        });
-
     }
 
     private void loadBackdrop() {
