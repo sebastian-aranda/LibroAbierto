@@ -41,6 +41,9 @@
     <string name="btn_publicar_libro">Publicar Libro</string>
 
     <!-- Sección Detalle Libro -->
+    <string name="autor_label">Autor</string>
+    <string name="editorial_label">Editorial</string>
+    <string name="largo_label">N°Páginas</string>
     <string name="publicado_label">Publicado por</string>
     <string name="fecha_public_label">Fecha de Publicación</string>
     <string name="estado_label">Estado</string>

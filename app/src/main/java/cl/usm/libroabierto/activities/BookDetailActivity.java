@@ -103,6 +103,15 @@ public class BookDetailActivity extends AppCompatActivity{
                     toolbar.setTitle(bookTitle);
                     collapsingToolbar.setTitle(bookTitle);
 
+                    final TextView autorView = (TextView) findViewById(R.id.autorDetail);
+                    autorView.setText(bookAutor);
+
+                    final TextView editorialView = (TextView) findViewById(R.id.editorialDetail);
+                    editorialView.setText(bookEditorial);
+
+                    final TextView pagesView = (TextView) findViewById(R.id.largoDetail);
+                    pagesView.setText(String.valueOf(bookPages));
+
                     final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
                     Glide.with(BookDetailActivity.this).load(bookImageUrl).centerCrop().into(imageView);
 

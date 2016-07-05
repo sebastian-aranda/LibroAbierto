@@ -56,133 +56,257 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="24dp">
+                android:fillViewport="true">
 
-                <RelativeLayout
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:id="@+id/icon_publicado"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_publ_account"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="32dp"/>
-
-                    <TextView
-                        android:id="@+id/publicacion_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:layout_toRightOf="@id/icon_publicado"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/publicado_label" />
-
-                    <TextView
-                        android:id="@+id/usuarioPublicadoDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/icon_publicado"
-                        android:layout_below="@id/publicacion_label"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:id="@+id/icon_fecha"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_today"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="32dp"/>
-
-                    <TextView
-                        android:id="@+id/fecha_public_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:layout_toRightOf="@id/icon_fecha"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/fecha_public_label"/>
-
-                    <TextView
-                        android:id="@+id/fechaPublicacionDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/icon_fecha"
-                        android:layout_below="@id/fecha_public_label"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/icon_estado"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_estado"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="32dp"/>
-
-                    <TextView
-                        android:id="@+id/estado_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:layout_toRightOf="@id/icon_estado"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/estado_label"/>
-
-                    <TextView
-                        android:id="@+id/estadoDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/icon_estado"
-                        android:layout_below="@id/estado_label"/>
-                </RelativeLayout>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/card_margin">
+                    android:stretchColumns="1">
 
                     <LinearLayout
-                        style="@style/Widget.CardContent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="28dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/description_label"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/descriptionDetail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            <RelativeLayout
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="8dp">
+
+                                <ImageView
+                                    android:id="@+id/icon_autor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_publ_account"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="32dp"/>
+
+                                <TextView
+                                    android:id="@+id/autor_label"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                    android:layout_toRightOf="@id/icon_autor"
+                                    android:layout_marginLeft="8dp"
+                                    android:text="@string/autor_label" />
+
+                                <TextView
+                                    android:id="@+id/autorDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_toRightOf="@id/icon_autor"
+                                    android:layout_below="@id/autor_label"/>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginRight="32dp">
+
+                                <ImageView
+                                    android:id="@+id/icon_editorial"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_pages"
+                                    android:layout_centerVertical="true"/>
+
+                                <TextView
+                                    android:id="@+id/editorial_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                    android:layout_toRightOf="@id/icon_editorial"
+                                    android:layout_marginLeft="8dp"
+                                    android:text="@string/editorial_label" />
+
+                                <TextView
+                                    android:id="@+id/editorialDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_toRightOf="@id/icon_editorial"
+                                    android:layout_below="@id/editorial_label"/>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="200dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:id="@+id/icon_estado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_estado"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="32dp"/>
+
+                            <TextView
+                                android:id="@+id/estado_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:layout_toRightOf="@id/icon_estado"
+                                android:layout_marginLeft="8dp"
+                                android:text="@string/estado_label"/>
+
+                            <TextView
+                                android:id="@+id/estadoDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/icon_estado"
+                                android:layout_below="@id/estado_label"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="200dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginRight="32dp">
+
+                            <ImageView
+                                android:id="@+id/icon_largo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_open_book"
+                                android:layout_centerVertical="true"/>
+
+                            <TextView
+                                android:id="@+id/largo_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:layout_toRightOf="@id/icon_largo"
+                                android:layout_marginLeft="8dp"
+                                android:text="@string/largo_label" />
+
+                            <TextView
+                                android:id="@+id/largoDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/icon_largo"
+                                android:layout_below="@id/largo_label" />
+                        </RelativeLayout>
 
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp">
 
-            </LinearLayout>
+                            <ImageView
+                                android:id="@+id/icon_publicado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_contact_person"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="32dp"/>
+
+                            <TextView
+                                android:id="@+id/publicacion_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:layout_toRightOf="@id/icon_publicado"
+                                android:layout_marginLeft="8dp"
+                                android:text="@string/publicado_label" />
+
+                            <TextView
+                                android:id="@+id/usuarioPublicadoDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/icon_publicado"
+                                android:layout_below="@id/publicacion_label"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:id="@+id/icon_fecha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_today"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="32dp"/>
+
+                            <TextView
+                                android:id="@+id/fecha_public_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:layout_toRightOf="@id/icon_fecha"
+                                android:layout_marginLeft="8dp"
+                                android:text="@string/fecha_public_label"/>
+
+                            <TextView
+                                android:id="@+id/fechaPublicacionDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/icon_fecha"
+                                android:layout_below="@id/fecha_public_label"/>
+                        </RelativeLayout>
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/card_margin">
+
+                            <LinearLayout
+                                style="@style/Widget.CardContent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/description_label"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                                <TextView
+                                    android:id="@+id/descriptionDetail"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                </TableLayout>
+
+            </ScrollView>
 
         </android.support.v4.widget.NestedScrollView>
 
