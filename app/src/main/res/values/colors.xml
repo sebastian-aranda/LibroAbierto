@@ -7,5 +7,8 @@
     <color name="colorToolbarDark">#E6B002</color>
     <color name="colorToolbarAccent">#29267A</color>
 
+    <color name="colorCheck">#0BD900</color>
+    <color name="colorDenied">#E60000</color>
+
     <color name="window_background">#FFF5F5F5</color>
 </resources>
