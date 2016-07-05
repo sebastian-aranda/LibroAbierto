@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,15 +111,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Load book Data for Detail Activity
-                Book selectedBook = (Book) adapterView.getAdapter().getItem(position);
+                final Book selectedBook = (Book) adapterView.getAdapter().getItem(position);
 
                 Intent intent = new Intent(getApplicationContext(),
                         BookDetailActivity.class);
-                intent.putExtra("BOOK_ID", selectedBook.getBookID());
-                //Test Data - Delete after Database setting
-                intent.putExtra("BOOK_TITLE", selectedBook.getTitulo());
-                intent.putExtra("BOOK_IMAGE", selectedBook.getRuta_fotografia());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+                intent.putExtra("BOOK_ID", selectedBook.getId());
+
                 startActivity(intent);
             }
         });
@@ -156,13 +153,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-            //TODO Obtener id_usuario logeado con google
-            Call<Usuario> call = api.getUsuario("0");
+            Call<Usuario> call = api.getUsuario(String.valueOf(usuario.getId()));
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    //publicadoTextView.setText(response.body().getNombre());
-                    publicadoTextView.setText("testing");
+                    publicadoTextView.setText(response.body().getNombre());
                 }
 
                 @Override
