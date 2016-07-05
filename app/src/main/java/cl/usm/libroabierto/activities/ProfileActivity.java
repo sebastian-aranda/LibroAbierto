@@ -1,5 +1,6 @@
 package cl.usm.libroabierto.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,13 +9,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import cl.usm.libroabierto.R;
+import cl.usm.libroabierto.models.Usuario;
 
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Context mContext;
+    private DatabaseHelper db;
+    private Usuario usuario;
 
     private NavigationView navMenu;
     private Menu lateral;
@@ -23,10 +36,19 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
+    TextView tvNombre, tvTelefono, tvEmail;
+    ImageView ivFoto;
+
+    private RatingBar ratingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mContext = this;
+        db = new DatabaseHelper(this);
+        usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.opcion_profile_title);
@@ -53,6 +75,24 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        tvNombre = (TextView) findViewById(R.id.nombre);
+        tvTelefono = (TextView) findViewById(R.id.telefono);
+        tvEmail = (TextView) findViewById(R.id.email);
+        ivFoto = (ImageView) findViewById(R.id.foto_perfil);
+        setUserData();
+
+        this.ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        ratingBar.setIsIndicator(true);
+        ratingBar.setRating(3);
+    }
+
+    public void setUserData(){
+        Glide.with(ProfileActivity.this).load(usuario.getFoto()).centerCrop().into(ivFoto);
+
+        tvNombre.setText(usuario.getNombre());
+        tvTelefono.setText(usuario.getTelefono());
+        tvEmail.setText(usuario.getEmail());
     }
 
     @Override

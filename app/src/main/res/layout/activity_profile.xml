@@ -20,7 +20,7 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="80dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/foto_perfil"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -38,21 +38,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/nombre_placeholder"
-                    android:layout_gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"/>
 
                 <TextView
                     android:id="@+id/telefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/telefono_placeholder"
-                    android:layout_gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"/>
 
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/email_placeholder"
-                    android:layout_gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"/>
             </LinearLayout>
 
             <!-- Rating Bar -->
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Calificacion de Usuario"
-                    android:layout_gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"/>
 
                 <RatingBar
                     android:id="@+id/ratingBar"

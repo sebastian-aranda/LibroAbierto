@@ -81,7 +81,6 @@ public class PublicarLibroActivity extends AppCompatActivity
 
         mContext = this;
         db = new DatabaseHelper(this);
-
         usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

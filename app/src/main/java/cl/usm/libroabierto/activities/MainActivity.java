@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-            Call<Usuario> call = api.getUsuario(String.valueOf(usuario.getId()));
+            Call<Usuario> call = api.getUsuario(usuario.getId());
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
