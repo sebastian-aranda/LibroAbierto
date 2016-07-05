@@ -13,7 +13,7 @@
     <!-- Seccion Login -->
     <string name="mensaje_login">LibroAbierto requiere acceder a tu informacion de usuario para poder desplegar sus funcionalidades:</string>
     <string name="google_sign_response_message" formatted="false">¡Bienvenido: %s!</string>
-    
+
     <!-- Sección Publicaciones -->
     <string name="publicacion_emisor">Publicado por:</string>
     <string name="fecha_publicacion">Fecha de Publicación:</string>
