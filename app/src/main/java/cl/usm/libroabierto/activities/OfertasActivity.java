@@ -38,6 +38,13 @@ import retrofit2.Retrofit;
 public class OfertasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         Callback<List<Book>> {
 
+    private Context mContext;
+    private DatabaseHelper db;
+    private Usuario usuario;
+
+    ArrayList<Book> books = new ArrayList<>();
+    private BooksAdapter booksAdapter;
+
     private NavigationView navMenu;
     private Menu lateral;
     private MenuItem opcionPublicaciones;
@@ -45,13 +52,14 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
-    ArrayList<Book> books = new ArrayList<>();
-    private BooksAdapter booksAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ofertas);
+
+        mContext = this;
+        db = new DatabaseHelper(this);
+        usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.opcion_ofertas_title);
@@ -144,8 +152,7 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
             final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-            //TODO Obtener id_usuario logeado con google
-            Call<Usuario> call = api.getUsuario("0");
+            Call<Usuario> call = api.getUsuario(usuario.getId());
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
