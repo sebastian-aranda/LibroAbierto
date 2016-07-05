@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
+    private Context mContext;
+    private static DatabaseHelper db;
+
+    private Usuario usuario;
     ArrayList<Book> books = new ArrayList<>();
     private BooksAdapter booksAdapter;
 
@@ -52,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = this;
+        db = new DatabaseHelper(this);
+
+        usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.opcion_publicaciones_title);
@@ -144,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-            //TODO Obtener id_usuario logeado con google
-            Call<Usuario> call = api.getUsuario("0");
+            Call<Usuario> call = api.getUsuario(String.valueOf(usuario.getId()));
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -198,6 +206,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            return;
+        }
     }
 }
 

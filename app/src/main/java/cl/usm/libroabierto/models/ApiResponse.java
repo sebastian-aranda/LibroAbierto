@@ -3,14 +3,19 @@ package cl.usm.libroabierto.models;
 import org.json.JSONArray;
 
 public class ApiResponse {
-    Integer state;
+    int state;
     String msg;
 
-    public Integer getState() {
+    public ApiResponse(int state, String msg) {
+        this.state = state;
+        this.msg = msg;
+    }
+
+    public int getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -19,11 +24,6 @@ public class ApiResponse {
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public ApiResponse(Integer state, String msg) {
-        this.state = state;
         this.msg = msg;
     }
 
