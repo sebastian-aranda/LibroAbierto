@@ -48,11 +48,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     //USUARIO
     public void createUsuario(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS usuario");
-        db.execSQL("CREATE TABLE usuario (id INTEGER PRIMARY KEY, nombre TEXT, telefono TEXT, email TEXT UNIQUE, foto TEXT)");
+        db.execSQL("CREATE TABLE usuario (id INTEGER, nombre TEXT, telefono TEXT, email TEXT, foto TEXT)");
         db.execSQL("INSERT INTO usuario (id, nombre, telefono, email, foto) VALUES (0,'', '', '', '')");
     }
 
-    public void updateUsuario(int old_id, int new_id, String nombre, String telefono, String email, String foto){
+    public int updateUsuario(int old_id, int new_id, String nombre, String telefono, String email, String foto){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -62,10 +62,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put("email", email);
         values.put("foto", foto);
 
-        db.update("usuario", values, " id = ?", new String[] {String.valueOf(old_id)});
+        int u = db.update("usuario", values, "id = "+old_id, null);
 
         db.close();
 
+        return u;
     }
 
     public Usuario getUsuario(){
@@ -77,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (cursor != null){
             try{
                 cursor.moveToFirst();
-                usuario = new Usuario(0, cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                usuario = new Usuario(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
             } catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
             }

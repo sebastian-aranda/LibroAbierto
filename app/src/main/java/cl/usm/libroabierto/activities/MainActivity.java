@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem opcionOfertas;
     private MenuItem opcionProfile;
 
+    private Context mContext;
+    private static DatabaseHelper db;
+
+    private Usuario usuario;
     ArrayList<Book> books = new ArrayList<>();
     private BooksAdapter booksAdapter;
 
@@ -53,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = this;
+        db = new DatabaseHelper(this);
+
+        usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.opcion_publicaciones_title);
@@ -152,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    publicadoTextView.setText(response.body().getNombre());
+                    //publicadoTextView.setText(response.body().getNombre());
+                    publicadoTextView.setText("testing");
                 }
 
                 @Override
@@ -201,6 +211,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            return;
+        }
     }
 }
 

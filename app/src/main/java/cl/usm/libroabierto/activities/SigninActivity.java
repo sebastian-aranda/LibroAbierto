@@ -32,8 +32,7 @@ import retrofit2.Retrofit;
 
 public class SigninActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener,
-        Callback<ApiResponse>{
+        View.OnClickListener{
 
     private Context mContext;
     private static final String TAG = "SignInActivity";
@@ -43,6 +42,7 @@ public class SigninActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
 
+    private Usuario usuario;
     private TextView mStatusTextView;
 
     @Override
@@ -95,20 +95,21 @@ public class SigninActivity extends AppCompatActivity implements
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            Usuario usuario = db.getUsuario();
-            if (usuario.getId() == 0 && usuario.getEmail().equals("")){
+            usuario = db.getUsuario();
+            Log.d(TAG, usuario.toString());
+            if (usuario.getId() == 0){
                 String nombre = (acct.getDisplayName() != null ? acct.getDisplayName() : "");
                 String telefono = "";
                 String email = (acct.getEmail() != null ? acct.getEmail() : "");
                 String foto = (acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "");
 
-                db.updateUsuario(0, 0,nombre, telefono, email, foto);
-                addUsuarioServer(nombre, telefono, email, foto);
+                usuario = new Usuario(0,nombre,telefono,email,foto);
+
+                addUsuario();
                 mStatusTextView.setText("Te has registrado exitosamente " + nombre + "!");
             }
             else{
-                getUsuarioServer(acct.getEmail());
-                mStatusTextView.setText("Bienvenido nuevamente " + acct.getEmail() + "!");
+                mStatusTextView.setText("Bienvenido nuevamente " + usuario.getNombre() + "!");
             }
 
             new android.os.Handler().postDelayed(
@@ -122,44 +123,26 @@ public class SigninActivity extends AppCompatActivity implements
         }
     }
 
-    public void addUsuarioServer(String nombre, String telefono, String email, String foto){
+    public void addUsuario(){
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<ApiResponse> call = api.addUsuario(nombre, telefono, email, foto);
-        call.enqueue(this);
-    }
-
-    public void getUsuarioServer(String email){
-        Retrofit retrofit = LibroAbiertoClient.getClient();
-        LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<Usuario> call = api.getUsuario(email);
-        call.enqueue(new Callback<Usuario>() {
+        Call<ApiResponse> call = api.addUsuario(usuario.getNombre(), usuario.getTelefono(), usuario.getEmail(), usuario.getFoto());
+        call.enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if(response.isSuccessful()){
-                    Usuario usuario = response.body();
-                    db.updateUsuario(0,usuario.getId(), usuario.getNombre(), usuario.getTelefono(), usuario.getEmail(), usuario.getFoto());
+                    Log.d(TAG,response.body().toString());
+                    Log.d(TAG, ""+db.updateUsuario(usuario.getId(), response.body().getState(), usuario.getNombre(), usuario.getTelefono(), usuario.getEmail(), usuario.getFoto()));
                 }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("RetrofitFailure", t.toString());
             }
         });
     }
 
-    @Override
-    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-        if(response.isSuccessful()){
-            Log.d(TAG,response.body().getMsg());
-        }
-    }
-
-    @Override
-    public void onFailure(Call<ApiResponse> call, Throwable t) {
-        Log.d("RetrofitFailure", t.toString());
-    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

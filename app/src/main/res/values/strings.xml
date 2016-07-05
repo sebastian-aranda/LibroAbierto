@@ -42,4 +42,9 @@
     <string name="fecha_public_label">Fecha de Publicación</string>
     <string name="estado_label">Estado</string>
     <string name="description_label">Descripción</string>
+
+    <!-- Sección Mi Cuenta -->
+    <string name="nombre_placeholder">Usuario</string>
+    <string name="telefono_placeholder">Telefono</string>
+    <string name="email_placeholder">Correo</string>
 </resources>

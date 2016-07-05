@@ -1,5 +1,6 @@
 package cl.usm.libroabierto.activities;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +38,7 @@ import android.widget.ToggleButton;
 import cl.usm.libroabierto.R;
 import cl.usm.libroabierto.models.ApiResponse;
 import cl.usm.libroabierto.models.Book;
+import cl.usm.libroabierto.models.Usuario;
 import cl.usm.libroabierto.network.LibroAbiertoAPI;
 import cl.usm.libroabierto.network.LibroAbiertoClient;
 import retrofit2.Call;
@@ -43,10 +47,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class PublicarLibroActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        Callback<ApiResponse>{
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private Context mContext;
+    private static DatabaseHelper db;
+
+    private Usuario usuario;
+    private Book book;
 
     private NavigationView navMenu;
     private Menu lateral;
@@ -56,6 +65,7 @@ public class PublicarLibroActivity extends AppCompatActivity
     private MenuItem opcionProfile;
 
     private Uri fileUri;
+    private Bitmap imagenLibro;
 
     private ImageView previewImage;
     private Button btnTakePicture, btnSelectPicture, btnPublishBook;
@@ -68,6 +78,11 @@ public class PublicarLibroActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicar_libro);
+
+        mContext = this;
+        db = new DatabaseHelper(this);
+
+        usuario = db.getUsuario();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.opcion_publicar_libro_title);
@@ -150,20 +165,61 @@ public class PublicarLibroActivity extends AppCompatActivity
     }
 
     public void publishBook(){
-        String titulo = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
-        String autor = ((EditText)findViewById(R.id.libro_autor)).getText().toString();
-        String editorial = ((EditText)findViewById(R.id.libro_editorial)).getText().toString();
+        String titulo = ((EditText) findViewById(R.id.libro_nombre)).getText().toString();
+        String autor = ((EditText) findViewById(R.id.libro_autor)).getText().toString();
+        String editorial = ((EditText) findViewById(R.id.libro_editorial)).getText().toString();
         int largo = Integer.parseInt(((EditText) findViewById(R.id.libro_largo)).getText().toString());
-        String descripcion = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
-        int estado = (((ToggleButton) findViewById(R.id.toggleStateButton)).isChecked())? 1 : 0;
-        //int estado = Integer.parseInt(((ToggleButton) findViewById(R.id.toggleStateButton)).getText().toString());
-        //String ruta_fotografia = ((EditText)findViewById(R.id.libro_descripcion)).getText().toString();
-        //int id_usuario = ((EditText)findViewById(R.id.libro_nombre)).getText().toString();
+        String descripcion = ((EditText) findViewById(R.id.libro_descripcion)).getText().toString();
+        int estado = (((ToggleButton) findViewById(R.id.toggleStateButton)).isChecked()) ? 1 : 0;
+
+        book = new Book(0,titulo,autor,editorial,estado,largo,descripcion,"",usuario.getId(),"");
+
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        String encodedImage = null;
+        if (imagenLibro != null){
+            imagenLibro.compress(Bitmap.CompressFormat.PNG, 100, bao);
+            byte[] ba = bao.toByteArray();
+            encodedImage = Base64.encodeToString(ba, Base64.DEFAULT);
+        }
+        else
+            encodedImage = "";
 
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<ApiResponse> call = api.addBook(titulo,autor,editorial,estado,largo, descripcion,"", 0);
-        call.enqueue(this);
+        Call<ApiResponse> callUploadImagen = api.uploadImagenLibro(encodedImage);
+        callUploadImagen.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body().getState() == 1) {
+                    Log.d("Retrofit response", response.body().toString());
+                    Retrofit retrofit = LibroAbiertoClient.getClient();
+                    LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+
+                    Call<ApiResponse> callAddBook = api.addBook(book.getTitulo(), book.getAutor(), book.getEditorial(), book.getEstado(), book.getLargo(), book.getDescripcion(), response.body().getMsg(), usuario.getId());
+                    callAddBook.enqueue(new Callback<ApiResponse>() {
+
+                        @Override
+                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                            if (response.isSuccessful()) {
+                                Log.d("Retrofit response", response.body().toString());
+                                Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiResponse> call, Throwable t) {
+                            Log.d("RetrofitFailure", t.toString());
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.d("RetrofitFailure", t.toString());
+            }
+        });
 
         // Limpia el Formulario tras el Post
         cleanBookForm();
@@ -201,7 +257,14 @@ public class PublicarLibroActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK){
-                showPicture();
+                String path = fileUri.getPath();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // down sizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
+                imagenLibro = BitmapFactory.decodeFile(path, options);
+                previewImage.setImageBitmap(imagenLibro);
             }
             else if (resultCode == RESULT_CANCELED)
                 Toast.makeText(getApplicationContext(), "Captura cancelada", Toast.LENGTH_LONG).show();
@@ -209,30 +272,18 @@ public class PublicarLibroActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Error al capturar la imagen", Toast.LENGTH_LONG).show();
         }
         else if (requestCode == GALLERY_IMAGE_REQUEST_CODE){
-            Uri image = null;
-            Bitmap bitmap = null;
             if (data == null) return;
+            Uri image = null;
             try{
                 image = data.getData();
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                previewImage.setImageBitmap(bitmap);
+                imagenLibro = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+                previewImage.setImageBitmap(imagenLibro);
             } catch (FileNotFoundException e){
                 e.printStackTrace();
             } catch (IOException e){
                 e.printStackTrace();
             }
         }
-    }
-
-    private void showPicture(){
-        String path = fileUri.getPath();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-        // down sizing image as it throws OutOfMemory Exception for larger
-        // images
-        options.inSampleSize = 8;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        previewImage.setImageBitmap(bitmap);
     }
 
     public Uri getOutputMediaFileUri() {
@@ -287,18 +338,5 @@ public class PublicarLibroActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-        if(response.isSuccessful()){
-            Log.d("Retrofit response", response.body().toString());
-            Toast.makeText(this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onFailure(Call<ApiResponse> call, Throwable t) {
-        Log.d("RetrofitFailure", t.toString());
     }
 }

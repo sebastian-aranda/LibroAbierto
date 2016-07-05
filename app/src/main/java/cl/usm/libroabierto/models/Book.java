@@ -15,8 +15,6 @@ public class Book {
     private int id_usuario;
     private String fecha_publicacion;
 
-    private String drawable;
-
     public Book(int id, String titulo, String autor, String editorial, int estado, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
     {
         this.bookID = id;

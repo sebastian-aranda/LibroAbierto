@@ -62,6 +62,7 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
+                ", foto='" + foto + '\'' +
                 '}';
     }
 }

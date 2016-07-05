@@ -28,4 +28,8 @@ public interface LibroAbiertoAPI {
     @FormUrlEncoded
     @POST("libroabierto_api.php?accion=agregarUsuario")
     Call<ApiResponse> addUsuario(@Field("nombre") String nombre, @Field("telefono") String telefono, @Field("email") String email, @Field("foto") String foto);
+
+    @FormUrlEncoded
+    @POST("libroabierto_api.php?accion=subirImagenLibro")
+    Call<ApiResponse> uploadImagenLibro(@Field("imagen") String imagenLibroBase64);
 }
