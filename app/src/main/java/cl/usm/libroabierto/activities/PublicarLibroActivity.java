@@ -202,6 +202,9 @@ public class PublicarLibroActivity extends AppCompatActivity
                             if (response.isSuccessful()) {
                                 Log.d("Retrofit response", response.body().toString());
                                 Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+
+                                // Limpia el Formulario tras el Post
+                                cleanBookForm();
                             }
                         }
 
@@ -220,8 +223,6 @@ public class PublicarLibroActivity extends AppCompatActivity
             }
         });
 
-        // Limpia el Formulario tras el Post
-        cleanBookForm();
     }
 
     // Limpia el Formulario de Publicar Libro

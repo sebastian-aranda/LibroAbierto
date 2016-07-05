@@ -2,12 +2,14 @@ package cl.usm.libroabierto.activities;
 
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -133,6 +135,22 @@ public class BookDetailActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<Book> call, Throwable t) {
                 Log.d("RetrofitFailure", t.toString());
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.offerFab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(getApplicationContext(),
+                        OfertarLibroActivity.class);
+
+                intent.putExtra("OFERTADO_ID", userID);
+                intent.putExtra("BOOK_ID", bookID);
+
+                startActivity(intent);
             }
         });
     }

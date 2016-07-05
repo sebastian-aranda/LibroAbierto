@@ -90,7 +90,7 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
         // Offer Book List View
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<List<Book>> call = api.getBooks();
+        Call<List<Book>> call = api.getOfferBooks(usuario.getId());
         call.enqueue(this);
 
         setListView();
@@ -125,8 +125,19 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
     @Override
     public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
         if(response.isSuccessful()){
-            books.addAll(response.body());
-            booksAdapter.notifyDataSetChanged();
+            TextView noOffer = (TextView)  findViewById(R.id.noOfferLabel);
+
+            if(response.body() == null){
+                Log.d("OFFER", "NULL IS HERE!");
+                noOffer.setVisibility(View.VISIBLE);
+            }
+            else{
+                Log.d("OFFER", "ERROR");
+                noOffer.setVisibility(View.GONE);
+
+                books.addAll(response.body());
+                booksAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -152,7 +163,7 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
             final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-            Call<Usuario> call = api.getUsuario(usuario.getId());
+            Call<Usuario> call = api.getUsuario(book.getId_usuario());
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
