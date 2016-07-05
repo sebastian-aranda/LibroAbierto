@@ -14,6 +14,7 @@ public class Book {
     private String ruta_fotografia;
     private int id_usuario;
     private String fecha_publicacion;
+    private int id_usuario_ofertado;
 
     public Book(int id, String titulo, String autor, String editorial, int estado, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion)
     {
@@ -27,6 +28,21 @@ public class Book {
         this.ruta_fotografia = ruta_fotografia;
         this.id_usuario = id_usuario;
         this.fecha_publicacion = fecha_publicacion;
+    }
+
+    public Book(int id, String titulo, String autor, String editorial, int estado, int largo, String descripcion, String ruta_fotografia,int id_usuario, String fecha_publicacion, int id_usuario_ofertado)
+    {
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.editorial = editorial;
+        this.estado = estado;
+        this.largo = largo;
+        this.descripcion = descripcion;
+        this.ruta_fotografia = ruta_fotografia;
+        this.id_usuario = id_usuario;
+        this.fecha_publicacion = fecha_publicacion;
+        this.id_usuario_ofertado = id_usuario_ofertado;
     }
 
     public int getId() { return id; }
@@ -101,6 +117,14 @@ public class Book {
 
     public void setFecha_publicacion(String fecha_publicacion) {
         this.fecha_publicacion = fecha_publicacion;
+    }
+
+    public int getId_usuario_ofertado() {
+        return id_usuario_ofertado;
+    }
+
+    public void setId_usuario_ofertado(int id_usuario_ofertado) {
+        this.id_usuario_ofertado = id_usuario_ofertado;
     }
 
     @Override

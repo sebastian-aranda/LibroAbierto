@@ -40,6 +40,13 @@
 
     <string name="btn_publicar_libro">Publicar Libro</string>
 
+    <!-- Sección Ofertas de Libros -->
+    <string name="no_offer_label">No Hay Ofertas Disponibles</string>
+
+    <!--  Sección Ofertar Libro -->
+    <string name="ofertar_libro_title">Ofertar Libro</string>
+    <string name="btn_ofertar_libro">Ofertar Libro</string>
+
     <!-- Sección Detalle Libro -->
     <string name="autor_label">Autor</string>
     <string name="editorial_label">Editorial</string>
