@@ -160,7 +160,7 @@ public class OfertaDetailActivity extends AppCompatActivity {
     // Back on pressed Back Arrow
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), OfertasActivity.class);
         startActivityForResult(intent, 0);
 
         return true;

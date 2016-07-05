@@ -90,7 +90,8 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
         // Offer Book List View
         Retrofit retrofit = LibroAbiertoClient.getClient();
         LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
-        Call<List<Book>> call = api.getOfferBooks(usuario.getId());
+        //Call<List<Book>> call = api.getOfferBooks(usuario.getId());
+        Call<List<Book>> call = api.getBooks();
         call.enqueue(this);
 
         setListView();
@@ -124,20 +125,9 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-        if(response.isSuccessful()){
-            TextView noOffer = (TextView)  findViewById(R.id.noOfferLabel);
-
-            if(response.body() == null){
-                Log.d("OFFER", "NULL IS HERE!");
-                noOffer.setVisibility(View.VISIBLE);
-            }
-            else{
-                Log.d("OFFER", "ERROR");
-                noOffer.setVisibility(View.GONE);
-
-                books.addAll(response.body());
-                booksAdapter.notifyDataSetChanged();
-            }
+        if (response.isSuccessful()) {
+            books.addAll(response.body());
+            booksAdapter.notifyDataSetChanged();
         }
     }
 
@@ -150,7 +140,7 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
     private class BooksAdapter extends ArrayAdapter<Book> {
 
         public BooksAdapter(Context context, int resource, ArrayList<Book> objects) {
-            super(context, resource,R.id.titleBookTextView, objects);
+            super(context, resource, R.id.titleBookTextView, objects);
         }
 
         @Override
@@ -160,7 +150,7 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
 
             Book book = getItem(position);
 
-            final TextView publicadoTextView = (TextView)row.findViewById(R.id.publicadoBookTextView);
+            final TextView publicadoTextView = (TextView) row.findViewById(R.id.publicadoBookTextView);
             Retrofit retrofit = LibroAbiertoClient.getClient();
             LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
             Call<Usuario> call = api.getUsuario(book.getId_usuario());
@@ -176,10 +166,10 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
                 }
             });
 
-            TextView fechaTextView = (TextView)row.findViewById(R.id.fechaPublicacionBookTextView);
+            TextView fechaTextView = (TextView) row.findViewById(R.id.fechaPublicacionBookTextView);
             fechaTextView.setText(book.getFecha_publicacion());
 
-            ImageView avatarImageView = (ImageView)row.findViewById(R.id.avatar);
+            ImageView avatarImageView = (ImageView) row.findViewById(R.id.avatar);
             Glide.with(OfertasActivity.this).load(book.getRuta_fotografia()).centerCrop().into(avatarImageView);
 
             return row;
@@ -191,22 +181,17 @@ public class OfertasActivity extends AppCompatActivity implements NavigationView
         int id = item.getItemId();
         Intent intent;
 
-        if (id == R.id.opcion_publicar_libro)
-        {
+        if (id == R.id.opcion_publicar_libro) {
             intent = new Intent(this,
                     PublicarLibroActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-        }
-        else if (id == R.id.opcion_publicaciones)
-        {
+        } else if (id == R.id.opcion_publicaciones) {
             intent = new Intent(this,
                     MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-        }
-        else if (id == R.id.opcion_profile)
-        {
+        } else if (id == R.id.opcion_profile) {
             intent = new Intent(this,
                     ProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
