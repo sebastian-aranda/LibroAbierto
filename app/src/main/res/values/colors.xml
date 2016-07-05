@@ -11,4 +11,6 @@
     <color name="colorDenied">#E60000</color>
 
     <color name="window_background">#FFF5F5F5</color>
+
+    <color name="separatorLine">#DBDBDB</color>
 </resources>

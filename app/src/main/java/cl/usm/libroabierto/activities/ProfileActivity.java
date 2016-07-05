@@ -20,10 +20,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import cl.usm.libroabierto.R;
+import cl.usm.libroabierto.models.ApiResponse;
 import cl.usm.libroabierto.models.Usuario;
+import cl.usm.libroabierto.network.LibroAbiertoAPI;
+import cl.usm.libroabierto.network.LibroAbiertoClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "ProfileActivity";
 
     private Context mContext;
     private DatabaseHelper db;
@@ -84,7 +93,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         this.ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         ratingBar.setIsIndicator(true);
-        ratingBar.setRating(3);
+
+        setUserRating();
     }
 
     public void setUserData(){
@@ -93,6 +103,25 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         tvNombre.setText(usuario.getNombre());
         tvTelefono.setText(usuario.getTelefono());
         tvEmail.setText(usuario.getEmail());
+    }
+
+    public void setUserRating(){
+        Retrofit retrofit = LibroAbiertoClient.getClient();
+        LibroAbiertoAPI api = retrofit.create(LibroAbiertoAPI.class);
+        Call<ApiResponse> call = api.getCalificaciones(usuario.getId());
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                Log.d(TAG,response.body().toString());
+                int nota = response.body().getState();
+                ratingBar.setRating(nota);
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.d(TAG,t.toString());
+            }
+        });
     }
 
     @Override

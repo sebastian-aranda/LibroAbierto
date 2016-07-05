@@ -23,4 +23,6 @@
 
     <!-- Margin Top for avoid overlap ListView with Toolbar -->
     <dimen name="list_view_margin_top">58dp</dimen>
+
+    <dimen name="separatorLineWidth">300dp</dimen>
 </resources>

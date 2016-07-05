@@ -29,6 +29,9 @@ public interface LibroAbiertoAPI {
     @GET("libroabierto_api.php?accion=obtenerLibro")
     Call<Book> getBook(@Query("id_libro") int id_libro);
 
+    @GET("libroabierto_api.php?accion=obtenerCalificaciones")
+    Call<ApiResponse> getCalificaciones(@Query("id_usuario") int id_usuario);
+
     @FormUrlEncoded
     @POST("libroabierto_api.php?accion=agregarLibro")
     Call<ApiResponse> addBook(@Field("titulo") String titulo, @Field("autor") String autor, @Field("editorial") String editorial, @Field("estado") int estado, @Field("largo") int largo, @Field("descripcion") String descripcion, @Field("ruta_fotografia") String ruta_fotografia, @Field("id_usuario") int id_usuario);
